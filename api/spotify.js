@@ -39,14 +39,8 @@ module.exports = async function handler(req, res) {
         const token = await getToken()
         const max = Math.min(parseInt(maxTracks), 50)
 
-        const fields = [
-            "name", "description", "images",
-            "tracks.total",
-            `tracks.items(track(id,name,duration_ms,uri,preview_url,artists(name),album(name,images)))`
-        ].join(",")
-
         const spRes = await fetch(
-            `https://api.spotify.com/v1/playlists/${playlistId}?fields=${encodeURIComponent(fields)}&limit=${max}`,
+            `https://api.spotify.com/v1/playlists/${playlistId}`,
             { headers: { Authorization: `Bearer ${token}` } }
         )
         if (!spRes.ok) throw new Error(`Spotify API ${spRes.status}`)
